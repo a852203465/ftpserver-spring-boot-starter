@@ -6,7 +6,7 @@ FTP Server 启动包
 
 ```
 <dependency>
-    <groupId>org.darkjrong</groupId>
+    <groupId>cn.darkjrong</groupId>
     <artifactId>ftpserver-spring-boot-starter</artifactId>
     <version>1.0</version>
 </dependency>
@@ -20,7 +20,7 @@ ftp:
     enabled: true
     activePort: 20
     passivePorts: 6000-6008
-    callback: com.darkjrong.ftpserver.impl.AlarmCallBackImpl
+    callback: cn.darkjrong.ftpserver.impl.AlarmCallBackImpl
     username: admin
     password: 123456
 ```
