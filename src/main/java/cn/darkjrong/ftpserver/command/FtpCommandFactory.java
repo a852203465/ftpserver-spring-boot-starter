@@ -1,7 +1,6 @@
 package cn.darkjrong.ftpserver.command;
 
 import cn.darkjrong.ftpserver.command.impl.*;
-import org.darkjrong.ftpserver.command.impl.*;
 import org.apache.ftpserver.command.Command;
 import org.apache.ftpserver.command.CommandFactory;
 import org.apache.ftpserver.command.CommandFactoryFactory;
