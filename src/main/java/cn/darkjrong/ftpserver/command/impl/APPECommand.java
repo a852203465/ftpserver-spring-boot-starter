@@ -1,6 +1,8 @@
 package cn.darkjrong.ftpserver.command.impl;
 
+import cn.darkjrong.ftpserver.callback.AlarmCallBack;
 import cn.darkjrong.spring.boot.autoconfigure.FtpServerFactoryBean;
+import cn.hutool.core.io.FileUtil;
 import org.apache.ftpserver.ftplet.*;
 import org.apache.ftpserver.impl.*;
 import org.apache.ftpserver.util.IoUtils;
@@ -22,6 +24,10 @@ import java.net.SocketException;
 public class APPECommand extends BaseCommand {
 
     private final Logger LOG = LoggerFactory.getLogger(APPECommand.class);
+
+    public APPECommand(AlarmCallBack alarmCallBack) {
+        super(alarmCallBack);
+    }
 
     /**
      * Execute command.
@@ -162,7 +168,7 @@ public class APPECommand extends BaseCommand {
                 //业务处理
                 InetAddress address = ((InetSocketAddress) session.getRemoteAddress()).getAddress();
 
-                super.alarmCallBack.invoke(new File(FtpServerFactoryBean.FTP_SERVER_HOME_DIR + File.separator + fileName), address.getHostAddress());
+                super.sendFile(fileName, address);
             }
 
             // if data transfer ok - send transfer complete message

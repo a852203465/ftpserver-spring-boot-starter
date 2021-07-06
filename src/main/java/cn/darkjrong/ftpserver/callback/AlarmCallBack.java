@@ -11,7 +11,7 @@ public interface AlarmCallBack {
 
     /**
      * 回调函数
-     * @param file 图片文件
+     * @param file 文件
      * @param hostAddress 地址
      * @date 2019/10/16 23:58
      */

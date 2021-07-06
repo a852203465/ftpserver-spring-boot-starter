@@ -1,10 +1,14 @@
 package cn.darkjrong.ftpserver.command.impl;
 
 import cn.darkjrong.ftpserver.callback.AlarmCallBack;
+import cn.darkjrong.spring.boot.autoconfigure.FtpServerFactoryBean;
+import cn.hutool.core.io.FileUtil;
 import org.apache.ftpserver.command.AbstractCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
+
+import java.io.File;
+import java.net.InetAddress;
 
 /**
  *  命令抽象类
@@ -15,19 +19,24 @@ public abstract class BaseCommand extends AbstractCommand {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseCommand.class);
 
-    protected AlarmCallBack alarmCallBack;
+    AlarmCallBack alarmCallBack;
 
-    public static String callback = "";
+    public BaseCommand(AlarmCallBack alarmCallBack) {
+        this.alarmCallBack = alarmCallBack;
+    }
 
-    public BaseCommand() {
+    /**
+     * 发送文件
+     *
+     * @param fileName 文件名称
+     * @param address  地址
+     */
+    void sendFile(String fileName, InetAddress address) {
 
-        Assert.notNull(callback, "'callback' must be not null");
-
-        try {
-            alarmCallBack = (AlarmCallBack)Class.forName(callback).newInstance();
-        } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
-            logger.error("The callback registration failed  ", e);
-        }
+        File file1 = new File(FtpServerFactoryBean.FTP_SERVER_HOME_DIR + File.separator + fileName);
+        alarmCallBack.invoke(file1, address.getHostAddress());
 
     }
+
+
 }

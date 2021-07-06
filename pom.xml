@@ -8,6 +8,15 @@
     <artifactId>ftpserver-spring-boot-starter</artifactId>
     <version>1.0</version>
 
+    <description>封装 Ftp Server 并制作Spring starter</description>
+
+    <developers>
+        <developer>
+            <name>贾荣</name>
+            <email>852203465@qq.com</email>
+        </developer>
+    </developers>
+
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,7 +52,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
         <!--ftp相关依赖-->
         <dependency>
@@ -79,6 +88,13 @@
             <artifactId>log4j-to-slf4j</artifactId>
             <version>${log4j.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+
 
     </dependencies>
 

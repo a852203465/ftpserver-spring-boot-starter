@@ -10,8 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "ftp")
 public class FtpServerProperties {
 
-    private static final String ENABLED = "false";
-
     /**
      *  IP ,   Can't "localhost", "127.0.0.1"
      */
@@ -20,12 +18,12 @@ public class FtpServerProperties {
     /**
      * 控制端口, 默认 21
      */
-    private String port;
+    private Integer port;
 
     /**
      *  主动模式连接端口 ,   默认: 20
      */
-    private String activePort;
+    private Integer activePort;
 
     /**
      *  被动模式连接端口范围
@@ -35,12 +33,12 @@ public class FtpServerProperties {
     /**
      *  最大登录用户, 默认  10
      */
-    private String maxLogin;
+    private Integer maxLogin;
 
     /**
      *  最大线程个数, 默认 10
      */
-    private String maxThreads;
+    private Integer maxThreads;
 
     /**
      *  用户名
@@ -53,49 +51,46 @@ public class FtpServerProperties {
     private String password;
 
     /**
-     *  回调函数实现类完整路径
-     */
-    private String callback;
-
-    /**
      * 是否开启 FTP Server
      */
-    private String enabled = ENABLED;
+    private Boolean enabled = Boolean.FALSE;
 
     /**
      *  最大空闲时间 ， 单位：秒，默认 300
      */
-    private String maxIdleTime;
+    private Integer maxIdleTime;
 
-    public String getMaxIdleTime() {
-        return maxIdleTime == null ? String.valueOf(300) : maxIdleTime;
+    public Integer getMaxIdleTime() {
+        return maxIdleTime == null ? 300 : maxIdleTime;
     }
 
-    public void setMaxIdleTime(String maxIdleTime) {
+    public void setMaxIdleTime(Integer maxIdleTime) {
         this.maxIdleTime = maxIdleTime;
     }
 
-    public String getEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(String enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
-    public String getMaxLogin() {
-        return maxLogin == null ? String.valueOf(10) : maxLogin;
+
+
+    public Integer getMaxLogin() {
+        return maxLogin == null ? 10 : maxLogin;
     }
 
-    public String getMaxThreads() {
-        return maxThreads == null ? String.valueOf(10) : maxThreads;
+    public Integer getMaxThreads() {
+        return maxThreads == null ? 10 : maxThreads;
     }
 
-    public String getActivePort() {
-        return activePort == null ? String.valueOf(20) : activePort;
+    public Integer getActivePort() {
+        return activePort == null ? 20 : activePort;
     }
 
-    public void setActivePort(String activePort) {
+    public void setActivePort(Integer activePort) {
         this.activePort = activePort;
     }
 
@@ -107,11 +102,11 @@ public class FtpServerProperties {
         this.host = host;
     }
 
-    public String getPort() {
-        return port == null ? String.valueOf(21) : port;
+    public Integer getPort() {
+        return port == null ? 21 : port;
     }
 
-    public void setPort(String port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
@@ -123,11 +118,11 @@ public class FtpServerProperties {
         this.passivePorts = passivePorts;
     }
 
-    public void setMaxLogin(String maxLogin) {
+    public void setMaxLogin(Integer maxLogin) {
         this.maxLogin = maxLogin;
     }
 
-    public void setMaxThreads(String maxThreads) {
+    public void setMaxThreads(Integer maxThreads) {
         this.maxThreads = maxThreads;
     }
 
@@ -146,15 +141,6 @@ public class FtpServerProperties {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getCallback() {
-        return callback;
-    }
-
-    public void setCallback(String callback) {
-        this.callback = callback;
-    }
-
 
 
 }

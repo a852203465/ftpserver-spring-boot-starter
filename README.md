@@ -20,7 +20,6 @@ ftp:
     enabled: true
     activePort: 20
     passivePorts: 6000-6008
-    callback: cn.darkjrong.ftpserver.impl.AlarmCallBackImpl
     username: admin
     password: 123456
 ```
@@ -28,6 +27,7 @@ ftp:
 文件接收，实现AlarmCallBack 
 ```java
 @Slf4j
+@Component
 public class AlarmCallBackImpl implements AlarmCallBack {
 
     @Override
