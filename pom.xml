@@ -24,11 +24,10 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven-compiler.version>3.8.1</maven-compiler.version>
-        <spring-boot.version>2.2.7.RELEASE</spring-boot.version>
+        <spring-boot.version>2.5.2</spring-boot.version>
         <maven-deploy.version>2.8.2</maven-deploy.version>
         <ftpserver.version>1.1.1</ftpserver.version>
         <log4j.version>2.12.1</log4j.version>
-        <spring.version>5.2.6.RELEASE</spring.version>
     </properties>
 
     <dependencies>
@@ -48,12 +47,7 @@
             <artifactId>spring-boot-starter</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <scope>provided</scope>
-        </dependency>
+
         <!--ftp相关依赖-->
         <dependency>
             <groupId>org.apache.ftpserver</groupId>
@@ -77,6 +71,10 @@
                 <exclusion>
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
                 </exclusion>
             </exclusions>
             <type>pom</type>
@@ -120,25 +118,6 @@
         </plugins>
 
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>releases</name>
-            <url>http://192.168.133.23:8081/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>snapshots</name>
-            <url>http://192.168.133.23:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-
-
-
-
-
 
 
 </project>

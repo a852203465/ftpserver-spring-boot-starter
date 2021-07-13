@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
@@ -94,24 +95,12 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
      */
     private AlarmCallBack createCallback() {
 
-        AlarmCallBack alarmCallBack;
-
-        Map beansOfType = null;
         try {
-
-            beansOfType = applicationContext.getBeansOfType(AlarmCallBack.class);
+            return applicationContext.getBean(AlarmCallBack.class);
         }catch (Exception e) {
             logger.error("createCallback {}" , e.getMessage());
+            throw new NoSuchBeanDefinitionException(AlarmCallBack.class, e.getMessage());
         }
-
-        if (CollectionUtil.isEmpty(beansOfType)) {
-            alarmCallBack = (AlarmCallBack) Proxy.newProxyInstance(AlarmCallBack.class.getClassLoader(),
-                    new Class[] {AlarmCallBack.class}, new InvokeHandler());
-        }else {
-            alarmCallBack = (AlarmCallBack) beansOfType.values().stream().filter(a -> a instanceof AlarmCallBack).findAny().orElse(null);
-        }
-
-        return alarmCallBack;
     }
 
     /**
@@ -241,19 +230,6 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
         listenerFactory.setDataConnectionConfiguration(createDataConnectionConfiguration());
 
         return listenerFactory.createListener();
-    }
-
-    /**
-     * 调用处理程序
-     * @author Rong.Jia
-     * @date 2021/07/06
-     */
-    static class InvokeHandler implements InvocationHandler {
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return method.invoke(this, args);
-        }
     }
 
 }
