@@ -4,16 +4,16 @@ FTP Server 启动包
 #使用方式
 自己下载install引入使用
 
-```
+```xml
 <dependency>
-    <groupId>cn.darkjrong</groupId>
+    <groupId>com.github.darkjrong</groupId>
     <artifactId>ftpserver-spring-boot-starter</artifactId>
     <version>1.0</version>
 </dependency>
 ```
 
 yml配置，必须配置enabled: true，否则默认false不起作用
-```yml
+```yaml
 ftp:
     host: 192.168.205.105
     port: 21
