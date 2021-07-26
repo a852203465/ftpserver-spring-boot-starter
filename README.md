@@ -6,7 +6,7 @@ FTP Server 启动包
 
 ```xml
 <dependency>
-    <groupId>com.github.darkjrong</groupId>
+    <groupId>cn.darkjrong</groupId>
     <artifactId>ftpserver-spring-boot-starter</artifactId>
     <version>1.0</version>
 </dependency>
