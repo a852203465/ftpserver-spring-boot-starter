@@ -1,5 +1,6 @@
 package cn.darkjrong.spring.boot.autoconfigure;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -7,8 +8,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Rong.Jia
  * @date 2019/10/17 00:23
  */
+@Data
 @ConfigurationProperties(prefix = "ftp")
 public class FtpServerProperties {
+
+    /**
+     * 是否开启 FTP Server
+     */
+    private boolean enabled = Boolean.FALSE;
 
     /**
      *  IP ,   Can't "localhost", "127.0.0.1"
@@ -18,12 +25,12 @@ public class FtpServerProperties {
     /**
      * 控制端口, 默认 21
      */
-    private Integer port;
+    private Integer port = 21;
 
     /**
-     *  主动模式连接端口 ,   默认: 20
+     *  主动模式连接端口 , 默认: 20
      */
-    private Integer activePort;
+    private Integer activePort = 20;
 
     /**
      *  被动模式连接端口范围
@@ -33,12 +40,12 @@ public class FtpServerProperties {
     /**
      *  最大登录用户, 默认  10
      */
-    private Integer maxLogin;
+    private Integer maxLogin = 10;
 
     /**
      *  最大线程个数, 默认 10
      */
-    private Integer maxThreads;
+    private Integer maxThreads = 10;
 
     /**
      *  用户名
@@ -51,96 +58,10 @@ public class FtpServerProperties {
     private String password;
 
     /**
-     * 是否开启 FTP Server
-     */
-    private Boolean enabled = Boolean.FALSE;
-
-    /**
      *  最大空闲时间 ， 单位：秒，默认 300
      */
-    private Integer maxIdleTime;
+    private Integer maxIdleTime = 300;
 
-    public Integer getMaxIdleTime() {
-        return maxIdleTime == null ? 300 : maxIdleTime;
-    }
-
-    public void setMaxIdleTime(Integer maxIdleTime) {
-        this.maxIdleTime = maxIdleTime;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-
-
-    public Integer getMaxLogin() {
-        return maxLogin == null ? 10 : maxLogin;
-    }
-
-    public Integer getMaxThreads() {
-        return maxThreads == null ? 10 : maxThreads;
-    }
-
-    public Integer getActivePort() {
-        return activePort == null ? 20 : activePort;
-    }
-
-    public void setActivePort(Integer activePort) {
-        this.activePort = activePort;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public Integer getPort() {
-        return port == null ? 21 : port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    public String getPassivePorts() {
-        return passivePorts;
-    }
-
-    public void setPassivePorts(String passivePorts) {
-        this.passivePorts = passivePorts;
-    }
-
-    public void setMaxLogin(Integer maxLogin) {
-        this.maxLogin = maxLogin;
-    }
-
-    public void setMaxThreads(Integer maxThreads) {
-        this.maxThreads = maxThreads;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
 
 }

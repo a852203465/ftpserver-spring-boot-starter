@@ -15,9 +15,9 @@ FTP Server 启动包
 yml配置，必须配置enabled: true，否则默认false不起作用
 ```yaml
 ftp:
+    enabled: true
     host: 192.168.205.105
     port: 21
-    enabled: true
     activePort: 20
     passivePorts: 6000-6008
     username: admin

@@ -1,6 +1,7 @@
 package cn.darkjrong.ftpserver.command.impl;
 
 import cn.darkjrong.ftpserver.callback.AlarmCallBack;
+import cn.darkjrong.ftpserver.constants.FtpConstant;
 import cn.darkjrong.spring.boot.autoconfigure.FtpServerFactoryBean;
 import org.apache.ftpserver.command.AbstractCommand;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public abstract class BaseCommand extends AbstractCommand {
      */
     void sendFile(String fileName, InetAddress address) {
 
-        File file1 = new File(FtpServerFactoryBean.FTP_SERVER_HOME_DIR + File.separator + fileName);
+        File file1 = new File(FtpConstant.FTP_SERVER_HOME_DIR + File.separator + fileName);
         alarmCallBack.invoke(file1, address.getHostAddress());
 
     }

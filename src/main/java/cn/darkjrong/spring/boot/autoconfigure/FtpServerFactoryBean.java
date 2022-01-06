@@ -2,6 +2,7 @@ package cn.darkjrong.spring.boot.autoconfigure;
 
 import cn.darkjrong.ftpserver.callback.AlarmCallBack;
 import cn.darkjrong.ftpserver.command.FtpCommandFactory;
+import cn.darkjrong.ftpserver.constants.FtpConstant;
 import org.apache.ftpserver.*;
 import org.apache.ftpserver.ftplet.Authority;
 import org.apache.ftpserver.ftplet.FtpException;
@@ -39,8 +40,6 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
 
     private static final Logger logger = LoggerFactory.getLogger(FtpServerFactoryBean.class);
 
-    public static final String FTP_SERVER_HOME_DIR = System.getProperty("user.dir") +"/data"+ File.separator +"res";
-
     private FtpServer ftpServer;
     private FtpServerProperties properties;
     private ApplicationContext applicationContext;
@@ -70,7 +69,7 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
         Assert.notNull(this.properties.getPort(), "port' must be not null");
 
         // 检查目录是否存在
-        mkHomeDir(FTP_SERVER_HOME_DIR);
+        mkHomeDir(FtpConstant.FTP_SERVER_HOME_DIR);
 
         ftpServer = createServer();
 
@@ -145,7 +144,7 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
                 BaseUser user = new BaseUser();
                 user.setName(properties.getUsername());
                 user.setPassword(properties.getPassword());
-                user.setHomeDirectory(FTP_SERVER_HOME_DIR);
+                user.setHomeDirectory(FtpConstant.FTP_SERVER_HOME_DIR);
                 user.setMaxIdleTime(properties.getMaxIdleTime());
                 user.setAuthorities(authorities);
                 userManager.save(user);
