@@ -63,6 +63,8 @@ public class FtpCommandFactory implements CommandFactory {
         COMMAND_MAP.put("AUTH",new AUTHCommand());
         COMMAND_MAP.put("SIZE",new SIZECommand());
         COMMAND_MAP.put("PORT",new PORTCommand());
+        COMMAND_MAP.put("SYST",new SYSTCommand());
+        COMMAND_MAP.put("RMD",new RMDCommand());
 
         return COMMAND_MAP;
     }
