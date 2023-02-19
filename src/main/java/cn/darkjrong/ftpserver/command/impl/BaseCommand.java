@@ -2,10 +2,8 @@ package cn.darkjrong.ftpserver.command.impl;
 
 import cn.darkjrong.ftpserver.callback.AlarmCallBack;
 import cn.darkjrong.ftpserver.constants.FtpConstant;
-import cn.darkjrong.spring.boot.autoconfigure.FtpServerFactoryBean;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.command.AbstractCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -15,9 +13,8 @@ import java.net.InetAddress;
  * @author Rong.Jia
  * @date 2019/10/17 09:49
  */
+@Slf4j
 public abstract class BaseCommand extends AbstractCommand {
-
-    private static final Logger logger = LoggerFactory.getLogger(BaseCommand.class);
 
     AlarmCallBack alarmCallBack;
 
@@ -32,7 +29,6 @@ public abstract class BaseCommand extends AbstractCommand {
      * @param address  地址
      */
     void sendFile(String fileName, InetAddress address) {
-
         File file1 = new File(FtpConstant.FTP_SERVER_HOME_DIR + File.separator + fileName);
         alarmCallBack.invoke(file1, address.getHostAddress());
 

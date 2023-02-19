@@ -9,7 +9,8 @@ import org.apache.ftpserver.command.CommandFactoryFactory;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *  ftp 工厂类
+ * ftp 工厂类
+ *
  * @author Ron.Jia
  * @date 2019/10/16 23:47:22
  */
@@ -59,28 +60,16 @@ public class FtpCommandFactory implements CommandFactory {
         COMMAND_MAP.put("RNTO", new RNTOCommand());
         COMMAND_MAP.put("RNFR", new RNFRCommand());
         COMMAND_MAP.put("APPE", new APPECommand(alarmCallBack));
-        COMMAND_MAP.put("MKD",new MKDCommand());
-        COMMAND_MAP.put("AUTH",new AUTHCommand());
-        COMMAND_MAP.put("SIZE",new SIZECommand());
-        COMMAND_MAP.put("PORT",new PORTCommand());
-        COMMAND_MAP.put("SYST",new SYSTCommand());
-        COMMAND_MAP.put("RMD",new RMDCommand());
+        COMMAND_MAP.put("MKD", new MKDCommand());
+        COMMAND_MAP.put("AUTH", new AUTHCommand());
+        COMMAND_MAP.put("SIZE", new SIZECommand());
+        COMMAND_MAP.put("PORT", new PORTCommand());
+        COMMAND_MAP.put("SYST", new SYSTCommand());
+        COMMAND_MAP.put("RMD", new RMDCommand());
+        COMMAND_MAP.put("EPSV", new EPSVCommand());
 
         return COMMAND_MAP;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

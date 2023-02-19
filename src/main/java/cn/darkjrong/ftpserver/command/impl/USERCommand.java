@@ -1,6 +1,7 @@
 
 package cn.darkjrong.ftpserver.command.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.command.impl.USER;
 import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.ftplet.FtpReply;
@@ -12,8 +13,6 @@ import org.apache.ftpserver.impl.LocalizedFtpReply;
 import org.apache.ftpserver.impl.ServerFtpStatistics;
 import org.apache.ftpserver.usermanager.impl.ConcurrentLoginRequest;
 import org.apache.mina.filter.logging.MdcInjectionFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -26,9 +25,8 @@ import java.net.InetSocketAddress;
  * @author Ron.Jia
  * @date 2019/10/16 23:47:22
  */
+@Slf4j
 public class USERCommand extends USER {
-
-    private final Logger LOG = LoggerFactory.getLogger(USERCommand.class);
 
     /**
      * Execute command.
@@ -94,12 +92,12 @@ public class USERCommand extends USER {
             int maxAnonLogin = context.getConnectionConfig()
                     .getMaxAnonymousLogins();
             if (maxAnonLogin == 0) {
-                LOG.debug("Currently {} anonymous users logged in, unlimited allowed", currAnonLogin);
+                log.debug("Currently {} anonymous users logged in, unlimited allowed", currAnonLogin);
             } else {
-                LOG.debug("Currently {} out of {} anonymous users logged in", currAnonLogin, maxAnonLogin);
+                log.debug("Currently {} out of {} anonymous users logged in", currAnonLogin, maxAnonLogin);
             }
             if (anonymous && (currAnonLogin >= maxAnonLogin)) {
-                LOG.debug("Too many anonymous users logged in, user will be disconnected");
+                log.debug("Too many anonymous users logged in, user will be disconnected");
 
                 session
                         .write(LocalizedFtpReply
@@ -117,13 +115,13 @@ public class USERCommand extends USER {
             int maxLogin = context.getConnectionConfig().getMaxLogins();
 
             if (maxLogin == 0) {
-                LOG.debug("Currently {} users logged in, unlimited allowed", currLogin);
+                log.debug("Currently {} users logged in, unlimited allowed", currLogin);
             } else {
-                LOG.debug("Currently {} out of {} users logged in", currLogin, maxLogin);
+                log.debug("Currently {} out of {} users logged in", currLogin, maxLogin);
             }
 
             if (maxLogin != 0 && currLogin >= maxLogin) {
-                LOG.debug("Too many users logged in, user will be disconnected");
+                log.debug("Too many users logged in, user will be disconnected");
 
                 session
                         .write(LocalizedFtpReply
@@ -151,7 +149,7 @@ public class USERCommand extends USER {
                         stat.getCurrentUserLoginNumber(configUser, address) + 1);
 
                 if (configUser.authorize(loginRequest) == null) {
-                    LOG.debug("User logged in too many sessions, user will be disconnected");
+                    log.debug("User logged in too many sessions, user will be disconnected");
                     session
                             .write(LocalizedFtpReply
                                     .translate(
@@ -180,7 +178,7 @@ public class USERCommand extends USER {
 
             // if not ok - close connection
             if (!success) {
-                LOG.debug("User failed to login, session will be closed");
+                log.debug("User failed to login, session will be closed");
                 session.close(false).awaitUninterruptibly(10000);
             }
         }

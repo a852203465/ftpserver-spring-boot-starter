@@ -1,12 +1,11 @@
 package cn.darkjrong.ftpserver.command.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.command.AbstractCommand;
 import org.apache.ftpserver.ftplet.*;
 import org.apache.ftpserver.impl.FtpIoSession;
 import org.apache.ftpserver.impl.FtpServerContext;
 import org.apache.ftpserver.impl.LocalizedFileActionFtpReply;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -15,9 +14,9 @@ import java.io.IOException;
  * @author Ron.Jia
  * @date 2019/10/16 23:47:22
  */
+@Slf4j
 public class CWDCommand extends AbstractCommand {
 
-    private final Logger LOG = LoggerFactory.getLogger(CWDCommand.class);
     @Override
     public void execute(FtpIoSession session, FtpServerContext context, FtpRequest request) throws IOException, FtpException {
         // reset state variables
@@ -32,7 +31,7 @@ public class CWDCommand extends AbstractCommand {
         try {
             success = fsview.changeWorkingDirectory(dirName);
         } catch (Exception ex) {
-            LOG.debug("Failed to change directory in file system", ex);
+            log.debug("Failed to change directory in file system", ex);
         }
         FtpFile cwd = fsview.getWorkingDirectory();
         if (success) {

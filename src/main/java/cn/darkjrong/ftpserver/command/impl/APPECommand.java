@@ -1,11 +1,10 @@
 package cn.darkjrong.ftpserver.command.impl;
 
 import cn.darkjrong.ftpserver.callback.AlarmCallBack;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.ftplet.*;
 import org.apache.ftpserver.impl.*;
 import org.apache.ftpserver.util.IoUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,9 +17,8 @@ import java.net.SocketException;
  * @author Ron.Jia
  * @date 2019/10/16 23:47:22
  */
+@Slf4j
 public class APPECommand extends BaseCommand {
-
-    private final Logger LOG = LoggerFactory.getLogger(APPECommand.class);
 
     public APPECommand(AlarmCallBack alarmCallBack) {
         super(alarmCallBack);
@@ -71,7 +69,7 @@ public class APPECommand extends BaseCommand {
             try {
                 file = session.getFileSystemView().getFile(fileName);
             } catch (Exception e) {
-                LOG.debug("File system threw exception", e);
+                log.debug("File system threw exception", e);
             }
             if (file == null) {
                 session.write(LocalizedDataTransferFtpReply.translate(session, request, context,
@@ -105,7 +103,7 @@ public class APPECommand extends BaseCommand {
             try {
                 dataConnection = session.getDataConnection().openConnection();
             } catch (Exception e) {
-                LOG.debug("Exception when getting data input stream", e);
+                log.debug("Exception when getting data input stream", e);
                 session.write(LocalizedDataTransferFtpReply.translate(session, request, context,
                         FtpReply.REPLY_425_CANT_OPEN_DATA_CONNECTION, "APPE",
                         fileName, file));
@@ -142,13 +140,13 @@ public class APPECommand extends BaseCommand {
                 ftpStat.setUpload(session, file, transSz);
 
             } catch (SocketException e) {
-                LOG.debug("SocketException during file upload", e);
+                log.debug("SocketException during file upload", e);
                 failure = true;
                 session.write(LocalizedDataTransferFtpReply.translate(session, request, context,
                         FtpReply.REPLY_426_CONNECTION_CLOSED_TRANSFER_ABORTED,
                         "APPE", fileName, file));
             } catch (IOException e) {
-                LOG.debug("IOException during file upload", e);
+                log.debug("IOException during file upload", e);
                 failure = true;
                 session
                         .write(LocalizedDataTransferFtpReply

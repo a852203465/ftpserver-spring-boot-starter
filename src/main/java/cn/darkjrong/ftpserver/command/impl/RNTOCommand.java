@@ -1,5 +1,6 @@
 package cn.darkjrong.ftpserver.command.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.command.AbstractCommand;
 import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.ftplet.FtpFile;
@@ -7,8 +8,6 @@ import org.apache.ftpserver.ftplet.FtpRequest;
 import org.apache.ftpserver.impl.FtpIoSession;
 import org.apache.ftpserver.impl.FtpServerContext;
 import org.apache.ftpserver.impl.LocalizedRenameFtpReply;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -17,9 +16,8 @@ import java.io.IOException;
  * @author Ron.Jia
  * @date 2019/10/16 23:47:22
  */
+@Slf4j
 public class RNTOCommand extends AbstractCommand {
-
-    private final Logger log = LoggerFactory.getLogger(QUITCommand.class);
 
     @Override
     public void execute(FtpIoSession session, FtpServerContext context, FtpRequest request) throws IOException, FtpException {

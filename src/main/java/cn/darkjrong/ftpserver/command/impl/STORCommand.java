@@ -1,11 +1,10 @@
 package cn.darkjrong.ftpserver.command.impl;
 
 import cn.darkjrong.ftpserver.callback.AlarmCallBack;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.ftplet.*;
 import org.apache.ftpserver.impl.*;
 import org.apache.ftpserver.util.IoUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,9 +20,8 @@ import java.net.SocketException;
  * @author Ron.Jia
  * @date 2019/10/16 23:47:22
  */
+@Slf4j
 public class STORCommand extends BaseCommand {
-
-    private final Logger log = LoggerFactory.getLogger(STORCommand.class);
 
     public STORCommand(AlarmCallBack alarmCallBack) {
         super(alarmCallBack);
