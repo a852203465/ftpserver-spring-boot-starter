@@ -1,8 +1,9 @@
 package cn.darkjrong.spring.boot.autoconfigure;
 
 import cn.darkjrong.ftpserver.callback.AlarmCallBack;
-import cn.darkjrong.ftpserver.command.FtpCommandFactory;
-import cn.darkjrong.ftpserver.constants.FtpConstant;
+import cn.darkjrong.ftpserver.FtpCommandFactory;
+import cn.darkjrong.ftpserver.constants.FtpServerConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.*;
 import org.apache.ftpserver.ftplet.Authority;
 import org.apache.ftpserver.ftplet.FtpException;
@@ -13,8 +14,6 @@ import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.apache.ftpserver.usermanager.impl.ConcurrentLoginPermission;
 import org.apache.ftpserver.usermanager.impl.WritePermission;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -23,7 +22,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -33,16 +31,17 @@ import java.util.Optional;
 
 /**
  * ftp Server工厂类
+ *
  * @author Rong.Jia
  * @date 2019/10/17 00:31
  */
+@Slf4j
 public class FtpServerFactoryBean implements InitializingBean, DisposableBean, ApplicationContextAware {
 
-    private static final Logger logger = LoggerFactory.getLogger(FtpServerFactoryBean.class);
-
     private FtpServer ftpServer;
-    private FtpServerProperties properties;
+    private FtpServerProperties ftpServerProperties;
     private ApplicationContext applicationContext;
+    private FtpCommandFactory ftpCommandFactory;
 
     @Override
     public void destroy() {
@@ -54,22 +53,23 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+        this.ftpCommandFactory = applicationContext.getBean(FtpCommandFactory.class);
     }
 
-    public void setProperties(FtpServerProperties properties) {
-        this.properties = properties;
+    public void setProperties(FtpServerProperties ftpServerProperties) {
+        this.ftpServerProperties = ftpServerProperties;
     }
 
     @Override
     public void afterPropertiesSet() {
 
-        Assert.notNull(this.properties, "'properties' must be not null");
-        Assert.notNull(this.properties.getUsername(), "'username' must be not null");
-        Assert.notNull(this.properties.getPassword(), "'password' must be not null");
-        Assert.notNull(this.properties.getPort(), "port' must be not null");
+        Assert.notNull(ftpServerProperties, "'properties' must be not null");
+        Assert.notNull(ftpServerProperties.getUsername(), "'username' must be not null");
+        Assert.notNull(ftpServerProperties.getPassword(), "'password' must be not null");
+        Assert.notNull(ftpServerProperties.getPort(), "port' must be not null");
 
         // 检查目录是否存在
-        mkHomeDir(FtpConstant.FTP_SERVER_HOME_DIR);
+        mkHomeDir(FtpServerConstant.FTP_SERVER_HOME_DIR);
 
         ftpServer = createServer();
 
@@ -77,7 +77,7 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
             try {
                 a.start();
             } catch (FtpException e) {
-                logger.error("Exception to start FTP Server {}", e.getMessage());
+                log.error("Exception to start FTP Server {}", e.getMessage());
             }
         });
     }
@@ -91,14 +91,15 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
 
         try {
             return applicationContext.getBean(AlarmCallBack.class);
-        }catch (Exception e) {
-            logger.error("createCallback {}" , e.getMessage());
+        } catch (Exception e) {
+            log.error("createCallback {}", e.getMessage());
             throw new NoSuchBeanDefinitionException(AlarmCallBack.class, e.getMessage());
         }
     }
 
     /**
-     *  创建目录
+     * 创建目录
+     *
      * @param homeDir 目录
      * @author Rong.Jia
      * @date 2019/10/17 00:27
@@ -107,7 +108,7 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
         try {
             Files.createDirectories(Paths.get(homeDir));
         } catch (IOException e) {
-            logger.error("Directory creation failed {}", e.getMessage());
+            log.error("Directory creation failed {}", e.getMessage());
         }
     }
 
@@ -116,7 +117,7 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
      *
      * @return {@link FtpServer} Ftp Server
      */
-    private FtpServer createServer () {
+    private FtpServer createServer() {
 
         FtpServerFactory serverFactory = new FtpServerFactory();
 
@@ -127,14 +128,14 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
         serverFactory.addListener("default", createListener());
 
         // 设置命令实现
-        serverFactory.setCommandFactory(FtpCommandFactory.createCommandFactory(createCallback()));
+        serverFactory.setCommandFactory(ftpCommandFactory.createCommandFactory());
 
         // 设置用户控制中心
         UserManager userManager = createUserManager();
 
         try {
 
-            boolean exist = userManager.doesExist(properties.getUsername());
+            boolean exist = userManager.doesExist(ftpServerProperties.getUsername());
 
             // need to init user
             if (!exist) {
@@ -142,10 +143,10 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
                 authorities.add(new WritePermission());
                 authorities.add(new ConcurrentLoginPermission(0, 0));
                 BaseUser user = new BaseUser();
-                user.setName(properties.getUsername());
-                user.setPassword(properties.getPassword());
-                user.setHomeDirectory(FtpConstant.FTP_SERVER_HOME_DIR);
-                user.setMaxIdleTime(properties.getMaxIdleTime());
+                user.setName(ftpServerProperties.getUsername());
+                user.setPassword(ftpServerProperties.getPassword());
+                user.setHomeDirectory(FtpServerConstant.FTP_SERVER_HOME_DIR);
+                user.setMaxIdleTime(ftpServerProperties.getMaxIdleTime());
                 user.setAuthorities(authorities);
                 userManager.save(user);
             }
@@ -154,8 +155,8 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
 
             // 创建
             return serverFactory.createServer();
-        }catch (Exception e) {
-            logger.error("Create an FTP Server exception {} ", e.getMessage());
+        } catch (Exception e) {
+            log.error("Create an FTP Server exception {} ", e.getMessage());
         }
 
         return null;
@@ -170,8 +171,8 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
 
         ConnectionConfigFactory connectionConfigFactory = new ConnectionConfigFactory();
         connectionConfigFactory.setAnonymousLoginEnabled(false);
-        connectionConfigFactory.setMaxLogins(properties.getMaxLogin());
-        connectionConfigFactory.setMaxThreads(properties.getMaxThreads());
+        connectionConfigFactory.setMaxLogins(ftpServerProperties.getMaxLogin());
+        connectionConfigFactory.setMaxThreads(ftpServerProperties.getMaxThreads());
 
         return connectionConfigFactory.createConnectionConfig();
     }
@@ -181,17 +182,17 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
      *
      * @return {@link DataConnectionConfiguration} 数据连接配置
      */
-    private  DataConnectionConfiguration createDataConnectionConfiguration() {
+    private DataConnectionConfiguration createDataConnectionConfiguration() {
 
         //主动模式/被动模式配置
         DataConnectionConfigurationFactory dataConnectionConfFactory = new DataConnectionConfigurationFactory();
         dataConnectionConfFactory.setActiveEnabled(Boolean.TRUE);
         dataConnectionConfFactory.setActiveIpCheck(Boolean.TRUE);
-        dataConnectionConfFactory.setActiveLocalAddress(properties.getHost());
-        dataConnectionConfFactory.setActiveLocalPort(properties.getActivePort());
+        dataConnectionConfFactory.setActiveLocalAddress(ftpServerProperties.getHost());
+        dataConnectionConfFactory.setActiveLocalPort(ftpServerProperties.getActivePort());
         dataConnectionConfFactory.setPassiveIpCheck(Boolean.TRUE);
-        Optional.ofNullable(properties.getPassivePorts()).ifPresent(dataConnectionConfFactory::setPassivePorts);
-        dataConnectionConfFactory.setPassiveExternalAddress(properties.getHost());
+        Optional.ofNullable(ftpServerProperties.getPassivePorts()).ifPresent(dataConnectionConfFactory::setPassivePorts);
+        dataConnectionConfFactory.setPassiveExternalAddress(ftpServerProperties.getHost());
 
         return dataConnectionConfFactory.createDataConnectionConfiguration();
     }
@@ -201,10 +202,10 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
      *
      * @return {@link UserManager} 用户管理器
      */
-    private UserManager createUserManager () {
+    private UserManager createUserManager() {
 
         PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
-        userManagerFactory.setAdminName(properties.getUsername());
+        userManagerFactory.setAdminName(ftpServerProperties.getUsername());
         return userManagerFactory.createUserManager();
     }
 
@@ -218,7 +219,7 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
         ListenerFactory listenerFactory = new ListenerFactory();
 
         // 配置FTP端口  控制端口
-        listenerFactory.setPort(properties.getPort());
+        listenerFactory.setPort(ftpServerProperties.getPort());
 
         // 主动模式/被动模式配置
         listenerFactory.setDataConnectionConfiguration(createDataConnectionConfiguration());

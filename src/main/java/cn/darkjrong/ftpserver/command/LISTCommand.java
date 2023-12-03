@@ -1,6 +1,8 @@
-package cn.darkjrong.ftpserver.command.impl;
+package cn.darkjrong.ftpserver.command;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.command.impl.LIST;
+import org.springframework.stereotype.Component;
 
 /**
  * 此命令使列表从服务器发送到被动DTP。
@@ -11,5 +13,19 @@ import org.apache.ftpserver.command.impl.LIST;
  * @author Ron.Jia
  * @date 2019/10/16 23:47:22
  */
+@Slf4j
+@Component("LIST")
 public class LISTCommand extends LIST {
+
+
+
+
+
+
+
+
+
+
+
+
 }

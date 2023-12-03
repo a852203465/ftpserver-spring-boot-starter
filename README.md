@@ -1,9 +1,9 @@
 # ftpserver-spring-boot-starter 
-FTP Server 启动包 
+    FTP Server 启动包 
 
-#使用方式
-自己下载install引入使用
-
+## 使用方式
+    自己下载install引入使用
+### 引入依赖
 ```xml
 <dependency>
     <groupId>cn.darkjrong</groupId>
@@ -12,9 +12,10 @@ FTP Server 启动包
 </dependency>
 ```
 
-yml配置，必须配置enabled: true，否则默认false不起作用
+### yml配置
+    必须配置enabled: true，否则默认false不起作用
 ```yaml
-ftp:
+ftpserver:
     enabled: true
     host: 192.168.205.105
     port: 21
@@ -24,7 +25,7 @@ ftp:
     password: 123456
 ```
 
-文件接收，实现AlarmCallBack 
+### 文件接收，实现AlarmCallBack
 ```java
 @Slf4j
 @Component
@@ -38,7 +39,17 @@ public class AlarmCallBackImpl implements AlarmCallBack {
 }
 ```
 
+### 增加命令
+继承Apache MINA的命令
+```java
+@Slf4j
+@Component("ACCT")
+public class ACCTCommand extends ACCT {
 
+
+
+}
+```
 
 
 

@@ -1,6 +1,8 @@
-package cn.darkjrong.ftpserver.command.impl;
+package cn.darkjrong.ftpserver.command;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.command.impl.RMD;
+import org.springframework.stereotype.Component;
 
 /**
  * 这个命令导致在路径名中指定的目录作为一个目录(如果路径名是绝对的)
@@ -9,6 +11,8 @@ import org.apache.ftpserver.command.impl.RMD;
  * @author Rong.Jia
  * @date 2022/01/07
  */
+@Slf4j
+@Component("RMD")
 public class RMDCommand extends RMD {
 
 

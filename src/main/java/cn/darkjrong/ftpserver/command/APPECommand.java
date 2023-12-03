@@ -1,10 +1,10 @@
-package cn.darkjrong.ftpserver.command.impl;
+package cn.darkjrong.ftpserver.command;
 
-import cn.darkjrong.ftpserver.callback.AlarmCallBack;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.ftplet.*;
 import org.apache.ftpserver.impl.*;
 import org.apache.ftpserver.util.IoUtils;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,11 +18,8 @@ import java.net.SocketException;
  * @date 2019/10/16 23:47:22
  */
 @Slf4j
+@Component("APPE")
 public class APPECommand extends BaseCommand {
-
-    public APPECommand(AlarmCallBack alarmCallBack) {
-        super(alarmCallBack);
-    }
 
     /**
      * Execute command.

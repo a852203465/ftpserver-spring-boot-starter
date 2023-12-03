@@ -1,4 +1,4 @@
-package cn.darkjrong.ftpserver.command.impl;
+package cn.darkjrong.ftpserver.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.command.AbstractCommand;
@@ -8,6 +8,7 @@ import org.apache.ftpserver.ftplet.FtpRequest;
 import org.apache.ftpserver.impl.FtpIoSession;
 import org.apache.ftpserver.impl.FtpServerContext;
 import org.apache.ftpserver.impl.LocalizedRenameFtpReply;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ import java.io.IOException;
  * @date 2019/10/16 23:47:22
  */
 @Slf4j
+@Component("RNTO")
 public class RNTOCommand extends AbstractCommand {
 
     @Override

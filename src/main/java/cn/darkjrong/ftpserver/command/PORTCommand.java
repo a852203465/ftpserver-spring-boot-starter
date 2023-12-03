@@ -1,6 +1,8 @@
-package cn.darkjrong.ftpserver.command.impl;
+package cn.darkjrong.ftpserver.command;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.command.impl.PORT;
+import org.springframework.stereotype.Component;
 
 /**
  * 该参数是用于数据连接的数据端口的HOST-PORT规范。
@@ -11,5 +13,18 @@ import org.apache.ftpserver.command.impl.PORT;
  * @author Ron.Jia
  * @date 2019/10/16 23:47:22
  */
+@Slf4j
+@Component("PORT")
 public class PORTCommand extends PORT {
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -1,5 +1,6 @@
-package cn.darkjrong.ftpserver.command.impl;
+package cn.darkjrong.ftpserver.command;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.command.AbstractCommand;
 import org.apache.ftpserver.ftplet.FtpReply;
 import org.apache.ftpserver.ftplet.FtpRequest;
@@ -8,6 +9,7 @@ import org.apache.ftpserver.impl.FtpServerContext;
 import org.apache.ftpserver.impl.LocalizedFtpReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -18,6 +20,8 @@ import java.net.InetSocketAddress;
  * @author Ron.Jia
  * @date 2019/10/16 23:47:22
  */
+@Slf4j
+@Component("QUIT")
 public class QUITCommand extends AbstractCommand {
 
     private final Logger LOG = LoggerFactory.getLogger(QUITCommand.class);
