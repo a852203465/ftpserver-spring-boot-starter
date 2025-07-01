@@ -1,8 +1,7 @@
 package cn.darkjrong.spring.boot.autoconfigure;
 
-import cn.darkjrong.ftpserver.callback.AlarmCallBack;
 import cn.darkjrong.ftpserver.FtpCommandFactory;
-import cn.darkjrong.ftpserver.constants.FtpServerConstant;
+import cn.darkjrong.ftpserver.callback.AlarmCallBack;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.*;
 import org.apache.ftpserver.ftplet.Authority;
@@ -69,7 +68,7 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
         Assert.notNull(ftpServerProperties.getPort(), "port' must be not null");
 
         // 检查目录是否存在
-        mkHomeDir(FtpServerConstant.FTP_SERVER_HOME_DIR);
+        mkHomeDir(ftpServerProperties.getHomeDirectory());
 
         ftpServer = createServer();
 
@@ -145,7 +144,7 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
                 BaseUser user = new BaseUser();
                 user.setName(ftpServerProperties.getUsername());
                 user.setPassword(ftpServerProperties.getPassword());
-                user.setHomeDirectory(FtpServerConstant.FTP_SERVER_HOME_DIR);
+                user.setHomeDirectory(ftpServerProperties.getHomeDirectory());
                 user.setMaxIdleTime(ftpServerProperties.getMaxIdleTime());
                 user.setAuthorities(authorities);
                 userManager.save(user);

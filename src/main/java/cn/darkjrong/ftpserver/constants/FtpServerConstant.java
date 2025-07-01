@@ -1,7 +1,5 @@
 package cn.darkjrong.ftpserver.constants;
 
-import java.io.File;
-
 /**
  * ftp Server 常数
  *
@@ -10,6 +8,6 @@ import java.io.File;
  */
 public class FtpServerConstant {
 
-    public static final String FTP_SERVER_HOME_DIR = System.getProperty("user.dir") +"/data"+ File.separator +"res";
+    public static final String FTP_SERVER_HOME_DIR = System.getProperty("user.dir") +"/data/res";
 
 }

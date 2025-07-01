@@ -23,6 +23,7 @@ ftpserver:
     passivePorts: 6000-6008
     username: admin
     password: 123456
+    homeDirectory: /data/res
 ```
 
 ### 文件接收，实现AlarmCallBack

@@ -1,5 +1,7 @@
 package cn.darkjrong.spring.boot.autoconfigure;
 
+import cn.darkjrong.ftpserver.constants.FtpServerConstant;
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -62,6 +64,12 @@ public class FtpServerProperties {
      */
     private Integer maxIdleTime = 300;
 
+    /**
+     * user home directory,默认：System.getProperty("user.dir") +"/data/res"
+     */
+    private String homeDirectory;
 
-
+    public String getHomeDirectory() {
+        return StrUtil.isBlank(homeDirectory) ? FtpServerConstant.FTP_SERVER_HOME_DIR : StrUtil.removeSuffix(homeDirectory, "/");
+    }
 }
