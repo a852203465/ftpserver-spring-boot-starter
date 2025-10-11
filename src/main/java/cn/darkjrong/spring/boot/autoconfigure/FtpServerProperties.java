@@ -69,7 +69,73 @@ public class FtpServerProperties {
      */
     private String homeDirectory;
 
+    /**
+     * SSL配置
+     */
+    private FtpSsl ssl = new FtpSsl();
+
     public String getHomeDirectory() {
         return StrUtil.isBlank(homeDirectory) ? FtpServerConstant.FTP_SERVER_HOME_DIR : StrUtil.removeSuffix(homeDirectory, "/");
     }
+
+    /**
+     * SSL配置
+     */
+    @Data
+    public static class FtpSsl {
+
+        /**
+         * 是否开启SSL
+         */
+        private boolean enabled = Boolean.FALSE;
+
+        /**
+         * 算法
+         */
+//        private String algorithm = "RSA";
+
+        /**
+         * 秘钥密码
+         */
+//        private String keyPassword;
+
+        /**
+         *
+         */
+//        private String keyAlias;
+
+        /**
+         * 密钥库文件
+         */
+        private String keystoreFile;
+
+        /**
+         * 密钥库密码
+         */
+        private String keystorePassword;
+
+        /**
+         * 信任库文件
+         */
+        private String trustStoreFile;
+
+        /**
+         * 信任库密码
+         */
+        private String trustStorePassword;
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
 }

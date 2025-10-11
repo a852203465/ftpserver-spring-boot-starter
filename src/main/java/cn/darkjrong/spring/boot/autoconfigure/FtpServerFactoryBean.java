@@ -2,6 +2,8 @@ package cn.darkjrong.spring.boot.autoconfigure;
 
 import cn.darkjrong.ftpserver.FtpCommandFactory;
 import cn.darkjrong.ftpserver.callback.AlarmCallBack;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ftpserver.*;
 import org.apache.ftpserver.ftplet.Authority;
@@ -9,6 +11,7 @@ import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.ftplet.UserManager;
 import org.apache.ftpserver.listener.Listener;
 import org.apache.ftpserver.listener.ListenerFactory;
+import org.apache.ftpserver.ssl.SslConfigurationFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.apache.ftpserver.usermanager.impl.ConcurrentLoginPermission;
@@ -223,7 +226,31 @@ public class FtpServerFactoryBean implements InitializingBean, DisposableBean, A
         // 主动模式/被动模式配置
         listenerFactory.setDataConnectionConfiguration(createDataConnectionConfiguration());
 
+        // ssl
+        FtpServerProperties.FtpSsl ssl = ftpServerProperties.getSsl();
+        if (ObjectUtil.isNotNull(ssl) && ssl.isEnabled()) {
+            listenerFactory.setImplicitSsl(true);
+            SslConfigurationFactory sslConfigurationFactory = new SslConfigurationFactory();
+            sslConfigurationFactory.setKeystoreFile(FileUtil.file(ssl.getKeystoreFile()));
+            sslConfigurationFactory.setKeystorePassword(ssl.getKeystorePassword());
+            sslConfigurationFactory.setSslProtocol("TLSv1.2");
+
+            //            sslConfigurationFactory.setKeystoreAlgorithm(ssl.getAlgorithm());
+//            sslConfigurationFactory.setKeyPassword(ssl.getKeyPassword());
+//            sslConfigurationFactory.setKeyAlias(ssl.getKeyAlias());
+//            sslConfigurationFactory.setTruststoreAlgorithm(ssl.getAlgorithm());
+
+            sslConfigurationFactory.setTruststoreFile(FileUtil.file(ssl.getTrustStoreFile()));
+            sslConfigurationFactory.setTruststorePassword(ssl.getTrustStorePassword());
+            sslConfigurationFactory.setClientAuthentication("true");
+            listenerFactory.setSslConfiguration(sslConfigurationFactory.createSslConfiguration());
+        }
+
         return listenerFactory.createListener();
     }
+
+
+
+
 
 }
