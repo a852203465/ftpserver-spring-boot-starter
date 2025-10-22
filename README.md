@@ -15,7 +15,8 @@
 ### yml配置
     必须配置enabled: true，否则默认false不起作用
 ```yaml
-ftpserver:
+ftp:
+  server:
     enabled: true
     host: 192.168.205.105
     port: 21

@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2019/10/17 00:23
  */
 @Data
-@ConfigurationProperties(prefix = "ftpserver")
+@ConfigurationProperties(prefix = "ftp.server")
 public class FtpServerProperties {
 
     /**
